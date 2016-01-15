@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<strong><link rel="stylesheet" href="{{ url_for('static', filename='css/mystyle.css') }}"></strong>
+
+<script src="{{ url_for('static', filename='js/jquery-1.9.0.js') }}"></script>
+<script language="javascript" type="text/javascript">
+function doreset() {
+	document.getElementById("userName").value = ""
+	document.getElementById("shellType").value = ""
+	document.getElementById("passWord").value = ""
+	document.getElementById("homeFolder").value = ""
+	document.getElementById("isGrant").checked = false
+	document.getElementById("operation").checked = false
+	document.getElementById("status").disabled = false
+	document.getElementById("status").value = ""
+}
+
+function enableAll() {
+	document.getElementById("shellType").disabled = false
+        document.getElementById("passWord").disabled = false
+        document.getElementById("homeFolder").disabled = false
+        document.getElementById("isGrant").disabled = false
+}
+
+function isDel() {
+        document.getElementById("userName").value = ""
+        document.getElementById("shellType").disabled = true
+        document.getElementById("passWord").disabled = true
+        document.getElementById("homeFolder").disabled = true
+        document.getElementById("isGrant").disabled = true
+        document.getElementById("status").enable
+        document.getElementById("status").value = ""
+}
+
+function isMod()
+{
+	enableAll()
+	document.getElementById("isGrant").disabled = true
+}
+
+$(function(){
+	$('button').click(function(){
+		$.ajax({
+			url: '/executeCmd',
+			data: $('form').serialize(),
+			type: 'POST',
+			success: function(response){
+				var output = response.split(':', 2);
+				document.getElementById("status").value = response
+				if (output[0] == "Failure")
+				{
+					document.getElementById("status")
+				}
+				else
+				{
+					document.getElementById("status")
+				}
+			},
+			error: function(error){
+				document.getElementById("status").value = error
+			}
+		});
+	});
+});
+
+</script>
+
+</head>
+<body> 
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <form action="." method="POST">
+    <table align="center">
+
+	<tr>
+		<td><h1>Enter your inputs: </h1></td>
+		<td></td>
+	</tr>
+
+	<tr>
+	<td><label for="username">User Name: </label></td>
+        <td><input type="text" id="userName" name="userName"></td>
+	</tr>
+
+	<tr>
+	<td><label for="passWord">Password: </label></td>
+        <td><input type="text" id="passWord" name="passWord"></td>
+	</tr>
+
+	<tr>
+	<td><label for="shellType">Shell Type: </label></td>
+        <td><input type="text" id="shellType" name="shellType"></td>
+	</tr>
+
+	<tr>
+	<td><label for="homeFolder">Home Folder: </label></td>
+        <td><input type="text" id="homeFolder" name="homeFolder"></td>
+	</tr>
+
+	<tr>
+	<td><label for="isGrant">Grant Sudo Privilege to user: </label></td>
+        <td><input type="checkbox" id="isGrant" name="isGrant" checked="checked" value=1></td>
+	</tr>
+
+	<tr>
+	<td><label for="operation">Select Operations:  </label></td>
+        <td>
+	<input type="radio" name="operation" id="operation"  checked="checked" value=1 onclick = "enableAll();"><lable>Create</lable>
+	<input type="radio" name="operation" id="operation" value=2 onclick = "isDel();"><lable>Delete</lable>
+	<input type="radio" name="operation" id="operation" value=3 onclick = "isMod();"><lable>Modify</lable>
+	</td>
+	</tr>
+
+        <tr>
+        <td><label for="Status">Status: </label></td>
+	  <td><input style="text-align:left; font-size:25px; outline:none; border:none; border-style: none; font-weight:bold  background: #557700; appearance:none;"  name="status" id="status" size="30" /></tb></td>
+
+        </tr>
+
+      </table>
+
+      <table align = "center">
+	<tr> 
+	<td align="center"><br><button type="button">Execute</button></td>
+	<td align="center"><br><input type="button" name="my-form" value="clear" onclick = "doreset();"></td>
+	</tr>
+      </table>
+    </form>
+</body>
+</html>
